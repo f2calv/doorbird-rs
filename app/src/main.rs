@@ -11,7 +11,7 @@ async fn main() -> Result<(), std::io::Error> {
 
     log::debug!("application started...");
 
-    let json = lib::doorbird_api::get_session(_app_settings.doorbird_config)
+    let res = lib::doorbird_api::get_session(_app_settings.doorbird_config)
         .await
         .unwrap();
     // .into_report()
@@ -20,7 +20,7 @@ async fn main() -> Result<(), std::io::Error> {
     //     "some API error happened here",
     // ))
     // .attach_printable("somthing failed")?;
-    println!("json={}", json);
+    println!("json={}", res);
 
     Ok(())
 }
