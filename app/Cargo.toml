@@ -4,4 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+env_logger = "0"
+config = "0"
+log = "0"
+tokio = { version = "1", features = ["full"] }
 lib = { path = "../lib" }

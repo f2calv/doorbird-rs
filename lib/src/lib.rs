@@ -1,3 +1,4 @@
+use reqwest::Error;
 use serde::{Deserialize, Serialize};
 
 pub fn add(left: usize, right: usize) -> usize {
@@ -35,4 +36,12 @@ impl std::fmt::Display for BHASession {
             self.return_code, self.session_id, self.encryption_type, self.encryption_key
         )
     }
+}
+
+pub async fn get_session(device_ip: String) -> Result<String, Error> {
+    let url = format!("http://{device_ip}/bha-api/getsession.cgi");
+
+    let body = reqwest::get(url).await?.text().await?;
+
+    Ok(body)
 }

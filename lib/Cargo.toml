@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+tokio = { version = "1", features = ["full"] }
 reqwest = "0.11.13"
 #reqwest = { git = "https://github.com/seanmonstar/reqwest" }
 serde = { version = "1.0.151", features = ["derive"] }
