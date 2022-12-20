@@ -1,0 +1,3 @@
+# Doorbird Client Library w/Rust
+
+First attempt at a public Rust crate...
