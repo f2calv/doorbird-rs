@@ -28,6 +28,35 @@ pub async fn get_session(doorbird_config: DoorbirdConfig) -> Result<SessionRespo
     Ok(res)
 }
 
+pub async fn invalidate_session(
+    doorbird_config: DoorbirdConfig,
+    old_session_id: String,
+) -> Result<SessionResponse, Error> {
+    let url = format!(
+        "http://{}/bha-api/getsession.cgi?invalidate={}",
+        doorbird_config.ip.unwrap(),
+        old_session_id
+    );
+
+    let client = reqwest::Client::new();
+
+    let response = client
+        .get(url)
+        .basic_auth(doorbird_config.username.unwrap(), doorbird_config.password)
+        .send()
+        .await?;
+    //Note: lets get something we can log prior to deserialization
+    //let res = response.json::<SessionResponse>().await?;
+
+    let json = response.text().await?;
+    //println!("{:?}", json);
+    log::debug!("json={}", json);
+    let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
+    let res = res.unwrap();
+
+    Ok(res)
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SessionResponse {
     #[serde(rename = "BHA")]
