@@ -1,12 +1,13 @@
 use reqwest::Error;
 use serde::{Deserialize, Serialize};
 
-pub async fn get_session(
-    device_ip: String,
-    user_name: String,
-    password: Option<String>,
-) -> Result<String, Error> {
-    let url = format!("http://{device_ip}/bha-api/getsession.cgi");
+use crate::doorbird_config::DoorbirdConfig;
+
+pub async fn get_session(doorbird_config: DoorbirdConfig) -> Result<String, Error> {
+    let url = format!(
+        "http://{}/bha-api/getsession.cgi",
+        doorbird_config.ip.unwrap()
+    );
 
     //let response = reqwest::get(&url).await?;
 
@@ -14,14 +15,14 @@ pub async fn get_session(
 
     let response = client
         .get(url)
-        .basic_auth(user_name, password)
+        .basic_auth(doorbird_config.username.unwrap(), doorbird_config.password)
         .send()
         .await?;
 
     //let json = response.json().await?;
 
     let body = response.text().await?;
-    println!("{:?}", body);
+    //println!("{:?}", body);
 
     Ok(body)
 }

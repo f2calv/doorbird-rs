@@ -11,20 +11,16 @@ async fn main() -> Result<(), std::io::Error> {
 
     log::debug!("application started...");
 
-    let body = lib::doorbird_api::get_session(
-        _app_settings.doorbird_config.ip.unwrap(),
-        _app_settings.doorbird_config.username.unwrap(),
-        _app_settings.doorbird_config.password,
-    )
-    .await
-    .unwrap();
+    let json = lib::doorbird_api::get_session(_app_settings.doorbird_config)
+        .await
+        .unwrap();
     // .into_report()
     // .change_context(std::io::Error::new(
     //     std::io::ErrorKind::Other,
     //     "some API error happened here",
     // ))
     // .attach_printable("somthing failed")?;
-    println!("{}", body);
+    println!("json={}", json);
 
     Ok(())
 }
@@ -48,7 +44,7 @@ mod configuration {
     #[derive(Debug, serde::Deserialize)]
     pub struct AppSettings {
         pub application: AppConfig,
-        pub doorbird_config: DoorbirdConfig,
+        pub doorbird_config: lib::doorbird_config::DoorbirdConfig,
     }
 
     impl std::fmt::Display for AppSettings {
@@ -70,23 +66,6 @@ mod configuration {
     impl std::fmt::Display for AppConfig {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "host='{:?}', port='{:?}'", self.host, self.port)
-        }
-    }
-
-    #[derive(Debug, serde::Deserialize)]
-    pub struct DoorbirdConfig {
-        pub ip: Option<String>,
-        pub username: Option<String>,
-        pub password: Option<String>,
-    }
-
-    impl std::fmt::Display for DoorbirdConfig {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(
-                f,
-                "ip='{:?}', username='{:?}', username='*******'",
-                self.ip, self.username
-            )
         }
     }
 }
