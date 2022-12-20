@@ -32,6 +32,7 @@ mod configuration {
     pub fn get_configuration() -> Result<AppSettings, ConfigError> {
         let config = Config::builder()
             .add_source(File::with_name("appsettings.toml"))
+            .add_source(File::with_name("appsettings.local.toml").required(false))
             .add_source(
                 config::Environment::with_prefix("APP")
                     .prefix_separator("_")
