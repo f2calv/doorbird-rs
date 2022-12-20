@@ -37,6 +37,8 @@ dependencies = [
  "error-stack",
  "lib",
  "log",
+ "serde",
+ "serde_json",
  "tokio",
 ]
 

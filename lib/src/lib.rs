@@ -1,3 +1,4 @@
+//use reqwest::blocking::Client;
 use reqwest::Error;
 use serde::{Deserialize, Serialize};
 
@@ -38,10 +39,23 @@ impl std::fmt::Display for BHASession {
     }
 }
 
-pub async fn get_session(device_ip: String) -> Result<String, Error> {
+pub async fn get_session(
+    device_ip: String,
+    user_name: String,
+    password: Option<String>,
+) -> Result<String, Error> {
     let url = format!("http://{device_ip}/bha-api/getsession.cgi");
 
-    let body = reqwest::get(url).await?.text().await?;
+    let client = reqwest::Client::new();
+
+    let response = client
+        .get(url)
+        .basic_auth(user_name, password)
+        .send()
+        .await?;
+
+    let body = response.text().await?;
+    println!("{:?}", body);
 
     Ok(body)
 }
