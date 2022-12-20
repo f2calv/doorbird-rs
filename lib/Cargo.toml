@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-reqwest = "0.11.0"
+reqwest = "0.11.13"
 #reqwest = { git = "https://github.com/seanmonstar/reqwest" }
-serde_json = "1.0.0"
+serde = { version = "1.0.151", features = ["derive"] }
+serde_json = "1.0.91"
