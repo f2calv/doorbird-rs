@@ -57,6 +57,22 @@ pub async fn invalidate_session(
     Ok(res)
 }
 
+pub async fn get_live_image(doorbird_config: DoorbirdConfig) -> Result<bytes::Bytes, Error> {
+    let url = format!("http://{}/bha-api/image.cgi", doorbird_config.ip.unwrap());
+
+    let client = reqwest::Client::new();
+
+    let bytes = client
+        .get(url)
+        .basic_auth(doorbird_config.username.unwrap(), doorbird_config.password)
+        .send()
+        .await?
+        .bytes()
+        .await?;
+
+    Ok(bytes)
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SessionResponse {
     #[serde(rename = "BHA")]
