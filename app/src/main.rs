@@ -1,6 +1,5 @@
 use env_logger::Env;
-use error_stack::{IntoReport, Result, ResultExt};
-use lib::get_session;
+use error_stack::Result;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
@@ -10,20 +9,21 @@ async fn main() -> Result<(), std::io::Error> {
     //Load app settings from env variables
     let _app_settings = configuration::get_configuration().expect("configuration issue");
 
-    log::debug!("application started... try this!");
+    log::debug!("application started...");
 
-    let body = get_session(
+    let body = lib::doorbird_api::get_session(
         _app_settings.doorbird_config.ip.unwrap(),
         _app_settings.doorbird_config.username.unwrap(),
         _app_settings.doorbird_config.password,
     )
     .await
-    .into_report()
-    .change_context(std::io::Error::new(
-        std::io::ErrorKind::Other,
-        "some API error happened here",
-    ))
-    .attach_printable("somthing failed")?;
+    .unwrap();
+    // .into_report()
+    // .change_context(std::io::Error::new(
+    //     std::io::ErrorKind::Other,
+    //     "some API error happened here",
+    // ))
+    // .attach_printable("somthing failed")?;
     println!("{}", body);
 
     Ok(())
