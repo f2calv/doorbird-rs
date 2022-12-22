@@ -1,76 +1,87 @@
+use crate::doorbird_config::DoorbirdConfig;
 use reqwest::Error;
 use serde::{Deserialize, Serialize};
 
-use crate::doorbird_config::DoorbirdConfig;
-
-pub async fn get_session(doorbird_config: DoorbirdConfig) -> Result<SessionResponse, Error> {
-    let url = format!(
-        "http://{}/bha-api/getsession.cgi",
-        doorbird_config.ip.unwrap()
-    );
-
-    let client = reqwest::Client::new();
-
-    let response = client
-        .get(url)
-        .basic_auth(doorbird_config.username.unwrap(), doorbird_config.password)
-        .send()
-        .await?;
-    //Note: lets get something we can log prior to deserialization
-    //let res = response.json::<SessionResponse>().await?;
-
-    let json = response.text().await?;
-    //println!("{:?}", json);
-    log::debug!("json={}", json);
-    let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
-    let res = res.unwrap();
-
-    Ok(res)
+pub struct Doorbird {
+    pub ip: String,
+    pub username: String,
+    pub password: String,
 }
 
-pub async fn invalidate_session(
-    doorbird_config: DoorbirdConfig,
-    old_session_id: String,
-) -> Result<SessionResponse, Error> {
-    let url = format!(
-        "http://{}/bha-api/getsession.cgi?invalidate={}",
-        doorbird_config.ip.unwrap(),
-        old_session_id
-    );
+impl Doorbird {
+    pub fn new(config: DoorbirdConfig) -> Self {
+        Self {
+            ip: config.ip.unwrap_or_default(),
+            username: config.username.unwrap_or_default(),
+            password: config.password.unwrap_or_default(),
+        }
+    }
 
-    let client = reqwest::Client::new();
+    pub async fn get_session(&self) -> Result<SessionResponse, Error> {
+        let url = format!("http://{}/bha-api/getsession.cgi", self.ip);
 
-    let response = client
-        .get(url)
-        .basic_auth(doorbird_config.username.unwrap(), doorbird_config.password)
-        .send()
-        .await?;
-    //Note: lets get something we can log prior to deserialization
-    //let res = response.json::<SessionResponse>().await?;
+        let client = reqwest::Client::new();
 
-    let json = response.text().await?;
-    //println!("{:?}", json);
-    log::debug!("json={}", json);
-    let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
-    let res = res.unwrap();
+        let response = client
+            .get(url)
+            .basic_auth(&self.username, Some(&self.password))
+            .send()
+            .await?;
+        //Note: lets get something we can log prior to deserialization
+        //let res = response.json::<SessionResponse>().await?;
 
-    Ok(res)
-}
+        let json = response.text().await?;
+        //println!("{:?}", json);
+        log::debug!("json={}", json);
+        let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
+        let res = res.unwrap();
 
-pub async fn get_live_image(doorbird_config: DoorbirdConfig) -> Result<bytes::Bytes, Error> {
-    let url = format!("http://{}/bha-api/image.cgi", doorbird_config.ip.unwrap());
+        Ok(res)
+    }
 
-    let client = reqwest::Client::new();
+    pub async fn invalidate_session(
+        &self,
+        old_session_id: String,
+    ) -> Result<SessionResponse, Error> {
+        let url = format!(
+            "http://{}/bha-api/getsession.cgi?invalidate={}",
+            self.ip, old_session_id
+        );
 
-    let bytes = client
-        .get(url)
-        .basic_auth(doorbird_config.username.unwrap(), doorbird_config.password)
-        .send()
-        .await?
-        .bytes()
-        .await?;
+        let client = reqwest::Client::new();
 
-    Ok(bytes)
+        let response = client
+            .get(url)
+            .basic_auth(&self.username, Some(&self.password))
+            .send()
+            .await?;
+        //Note: lets get something we can log prior to deserialization
+        //let res = response.json::<SessionResponse>().await?;
+
+        let json = response.text().await?;
+        //println!("{:?}", json);
+        log::debug!("json={}", json);
+        let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
+        let res = res.unwrap();
+
+        Ok(res)
+    }
+
+    pub async fn get_live_image(&self) -> Result<bytes::Bytes, Error> {
+        let url = format!("http://{}/bha-api/image.cgi", self.ip);
+
+        let client = reqwest::Client::new();
+
+        let bytes = client
+            .get(url)
+            .basic_auth(&self.username, Some(&self.password))
+            .send()
+            .await?
+            .bytes()
+            .await?;
+
+        Ok(bytes)
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]

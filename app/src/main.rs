@@ -11,9 +11,9 @@ async fn main() -> Result<(), std::io::Error> {
 
     log::debug!("application started...");
 
-    let res = lib::doorbird_api::get_session(_app_settings.doorbird_config)
-        .await
-        .unwrap();
+    let doorbird = lib::doorbird_api::Doorbird::new(_app_settings.doorbird_config);
+
+    let res = doorbird.get_session().await.unwrap();
     // .into_report()
     // .change_context(std::io::Error::new(
     //     std::io::ErrorKind::Other,
@@ -21,6 +21,10 @@ async fn main() -> Result<(), std::io::Error> {
     // ))
     // .attach_printable("somthing failed")?;
     println!("json={}", res);
+
+    let bytes = doorbird.get_live_image().await.unwrap();
+
+    println!("bytes={}", bytes.len());
 
     Ok(())
 }
