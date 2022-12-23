@@ -1,6 +1,40 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct SessionResponse {
+    #[serde(rename = "BHA")]
+    pub bha: BHASession,
+}
+
+impl std::fmt::Display for SessionResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "BHA='{:?}'", self.bha)
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct BHASession {
+    #[serde(rename = "RETURNCODE")]
+    pub return_code: String,
+    #[serde(rename = "SESSIONID")]
+    pub session_id: String,
+    #[serde(rename = "ENCRYPTION_TYPE")]
+    pub encryption_type: i32,
+    #[serde(rename = "ENCRYPTION_KEY")]
+    pub encryption_key: String,
+}
+
+impl std::fmt::Display for BHASession {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "RETURNCODE='{:?}', SESSIONID='{:?}', ENCRYPTION_TYPE='{:?}', ENCRYPTION_KEY='{:?}'",
+            self.return_code, self.session_id, self.encryption_type, self.encryption_key
+        )
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct InfoResponse {
     #[serde(rename = "BHA")]
     pub bha: BHAInfo,

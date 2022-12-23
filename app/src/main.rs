@@ -28,6 +28,9 @@ async fn main() -> Result<(), std::io::Error> {
     let info = doorbird.get_info().await.unwrap();
     println!("info={}", info);
 
+    let favorites = doorbird.get_favorites().await.unwrap();
+    println!("favorites={}", favorites);
+
     Ok(())
 }
 
