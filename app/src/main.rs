@@ -23,8 +23,10 @@ async fn main() -> Result<(), std::io::Error> {
     println!("json={}", res);
 
     let bytes = doorbird.get_live_image().await.unwrap();
-
     println!("bytes={}", bytes.len());
+
+    let info = doorbird.get_info().await.unwrap();
+    println!("info={}", info);
 
     Ok(())
 }

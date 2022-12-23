@@ -1,4 +1,4 @@
-use crate::doorbird_config::DoorbirdConfig;
+use crate::{doorbird_config::DoorbirdConfig, doorbird_models::InfoResponse};
 use reqwest::Error;
 use serde::{Deserialize, Serialize};
 
@@ -81,6 +81,28 @@ impl Doorbird {
             .await?;
 
         Ok(bytes)
+    }
+
+    pub async fn get_info(&self) -> Result<InfoResponse, Error> {
+        let url = format!("http://{}/bha-api/info.cgi", self.ip);
+
+        let client = reqwest::Client::new();
+
+        let response = client
+            .get(url)
+            .basic_auth(&self.username, Some(&self.password))
+            .send()
+            .await?;
+        //Note: lets get something we can log prior to deserialization
+        //let res = response.json::<InfoResponse>().await?;
+
+        let json = response.text().await?;
+        //println!("{:?}", json);
+        log::debug!("json={}", json);
+        let res: Result<InfoResponse, serde_json::Error> = serde_json::from_str(json.as_str());
+        let res = res.unwrap();
+
+        Ok(res)
     }
 }
 
