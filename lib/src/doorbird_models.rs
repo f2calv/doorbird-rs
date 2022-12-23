@@ -83,3 +83,30 @@ impl std::fmt::Display for Version {
         )
     }
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Favorite {
+    #[serde(rename = "type")]
+    pub _type: String, //sip | http
+    pub title: String, //name / title
+    pub value: String, //URL / address
+    pub id: Option<u32>,
+}
+
+impl std::fmt::Display for Favorite {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if self.id.is_none() {
+            write!(
+                f,
+                "type={:?}&title={:?}&value={:?}",
+                self._type, self.title, self.value
+            )
+        } else {
+            write!(
+                f,
+                "type={:?}&title={:?}&value={:?}&id={:?}",
+                self._type, self.title, self.value, self.id
+            )
+        }
+    }
+}

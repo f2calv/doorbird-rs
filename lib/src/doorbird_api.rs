@@ -129,4 +129,43 @@ impl Doorbird {
 
         // Ok(res)
     }
+
+    pub async fn add_favorite(
+        &self,
+        _type: String,
+        title: String,
+        value: String,
+    ) -> Result<String, Error> {
+        let url = format!("http://{}/bha-api/favorites.cgi?action=save", self.ip);
+
+        let favourite = Favorite {
+            _type,
+            title,
+            value,
+            id: None,
+        };
+        let url = format!("{}&{}", url, favourite);
+
+        let client = reqwest::Client::new();
+
+        let response = client
+            .get(url)
+            .basic_auth(&self.username, Some(&self.password))
+            .send()
+            .await?;
+        //Note: lets get something we can log prior to deserialization
+        //let res = response.json::<SessionResponse>().await?;
+
+        let json = response.text().await?;
+        Ok(json)
+
+        //TODO: create favorite object
+
+        ////println!("{:?}", json);
+        // log::debug!("json={}", json);
+        // let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
+        // let res = res.unwrap();
+
+        // Ok(res)
+    }
 }

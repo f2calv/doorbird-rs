@@ -31,6 +31,14 @@ async fn main() -> Result<(), std::io::Error> {
     let favorites = doorbird.get_favorites().await.unwrap();
     println!("favorites={}", favorites);
 
+    // doorbird
+    //     .add_favorite(
+    //         String::from("http"),
+    //         String::from("test title"),
+    //         String::from("https://www.google.com"),
+    //     )
+    //     .await
+    //     .unwrap();
     Ok(())
 }
 
