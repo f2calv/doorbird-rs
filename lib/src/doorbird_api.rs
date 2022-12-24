@@ -1,5 +1,5 @@
 use crate::{doorbird_config::DoorbirdConfig, doorbird_models::*};
-use reqwest::Error;
+use reqwest::{Error, Url};
 
 pub struct Doorbird {
     pub ip: String,
@@ -135,16 +135,66 @@ impl Doorbird {
         _type: String,
         title: String,
         value: String,
+        id: Option<String>,
     ) -> Result<String, Error> {
-        let url = format!("http://{}/bha-api/favorites.cgi?action=save", self.ip);
+        let url = Url::parse_with_params(
+            format!("http://{}/bha-api/favorites.cgi", self.ip).as_str(),
+            &[
+                ("action", "save"),
+                ("type", _type.as_str()),
+                ("title", title.as_str()),
+                ("value", value.as_str()),
+            ],
+        )
+        .unwrap();
 
-        let favourite = Favorite {
-            _type,
-            title,
-            value,
-            id: None,
-        };
-        let url = format!("{}&{}", url, favourite);
+        if id.is_some() {
+            //let url = url.join(format!("&id={}", id.unwrap().as_str());
+        }
+
+        //let url = format!("http://{}/bha-api/favorites.cgi?action=save", self.ip);
+
+        // let favourite = Favorite {
+        //     _type,
+        //     title,
+        //     value,
+        //     id: None,
+        // };
+        // let url = format!("{}&{}", url, favourite);
+        //let url = "http://192.168.1.170/bha-api/favorites.cgi?action=save&type=http&title=RingServ&value=https://172.17.1.5/notify/ring";
+
+        log::debug!("url={}", url);
+        let client = reqwest::Client::new();
+
+        let response = client
+            .get(url)
+            .basic_auth(&self.username, Some(&self.password))
+            .send()
+            .await?;
+        //Note: lets get something we can log prior to deserialization
+        //let res = response.json::<SessionResponse>().await?;
+
+        //let json = &response.text().await?;
+
+        let status = response.status().to_string();
+
+        Ok(status)
+
+        ////println!("{:?}", json);
+        // log::debug!("json={}", json);
+        // let res: Result<SessionResponse, serde_json::Error> = serde_json::from_str(json.as_str());
+        // let res = res.unwrap();
+
+        // Ok(res)
+    }
+
+    pub async fn open_door(
+        &self,
+        //door_controller_id: String,
+        //relay: String,
+    ) -> Result<String, Error> {
+        let url = format!("http://{}/bha-api/open-door.cgi", self.ip);
+        log::debug!("url={}", url);
 
         let client = reqwest::Client::new();
 

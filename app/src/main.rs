@@ -13,32 +13,34 @@ async fn main() -> Result<(), std::io::Error> {
 
     let doorbird = lib::doorbird_api::Doorbird::new(_app_settings.doorbird_config);
 
-    let res = doorbird.get_session().await.unwrap();
-    // .into_report()
-    // .change_context(std::io::Error::new(
-    //     std::io::ErrorKind::Other,
-    //     "some API error happened here",
-    // ))
-    // .attach_printable("somthing failed")?;
-    println!("json={}", res);
+    // let res = doorbird.get_session().await.unwrap();
+    // // .into_report()
+    // // .change_context(std::io::Error::new(
+    // //     std::io::ErrorKind::Other,
+    // //     "some API error happened here",
+    // // ))
+    // // .attach_printable("somthing failed")?;
+    // println!("json={}", res);
 
-    let bytes = doorbird.get_live_image().await.unwrap();
-    println!("bytes={}", bytes.len());
+    // let bytes = doorbird.get_live_image().await.unwrap();
+    // println!("bytes={}", bytes.len());
 
-    let info = doorbird.get_info().await.unwrap();
-    println!("info={}", info);
+    // let info = doorbird.get_info().await.unwrap();
+    // println!("info={}", info);
 
-    let favorites = doorbird.get_favorites().await.unwrap();
-    println!("favorites={}", favorites);
+    // let favorites = doorbird.get_favorites().await.unwrap();
+    // println!("favorites={}", favorites);
 
-    // doorbird
-    //     .add_favorite(
-    //         String::from("http"),
-    //         String::from("test title"),
-    //         String::from("https://www.google.com"),
-    //     )
-    //     .await
-    //     .unwrap();
+    let status = doorbird
+        .add_favorite(
+            String::from("http"),
+            String::from("test title"),
+            String::from("https://www.google.com"),
+            Option::None,
+        )
+        .await
+        .unwrap();
+    println!("add_favourite={}", status);
     Ok(())
 }
 
