@@ -188,6 +188,8 @@ impl Doorbird {
         // Ok(res)
     }
 
+    //TODO: delete_favourite
+
     pub async fn open_door(
         &self,
         //door_controller_id: String,
@@ -218,4 +220,10 @@ impl Doorbird {
 
         // Ok(res)
     }
+
+    //TODO: get_schedules
+    //TODO: add_schedule
+    //TODO: update_schedule
+    //TODO: delete_schedule
+    //TODO: restart_device
 }
