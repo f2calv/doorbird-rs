@@ -17,3 +17,6 @@
 
 #exclude appsettings
 appsettings.local.toml
+
+#exclude example JSON responses
+responses/
