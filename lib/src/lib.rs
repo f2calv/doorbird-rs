@@ -1,5 +1,6 @@
 pub mod doorbird_api;
 pub mod doorbird_config;
+pub mod doorbird_models;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right

@@ -16,4 +16,7 @@
 **/*.rs.bk
 
 #exclude appsettings
-appsettings.toml
+appsettings.local.toml
+
+#exclude example JSON responses
+responses/

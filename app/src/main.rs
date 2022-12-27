@@ -11,17 +11,36 @@ async fn main() -> Result<(), std::io::Error> {
 
     log::debug!("application started...");
 
-    let res = lib::doorbird_api::get_session(_app_settings.doorbird_config)
+    let doorbird = lib::doorbird_api::Doorbird::new(_app_settings.doorbird_config);
+
+    // let res = doorbird.get_session().await.unwrap();
+    // // .into_report()
+    // // .change_context(std::io::Error::new(
+    // //     std::io::ErrorKind::Other,
+    // //     "some API error happened here",
+    // // ))
+    // // .attach_printable("somthing failed")?;
+    // println!("json={}", res);
+
+    // let bytes = doorbird.get_live_image().await.unwrap();
+    // println!("bytes={}", bytes.len());
+
+    // let info = doorbird.get_info().await.unwrap();
+    // println!("info={}", info);
+
+    // let favorites = doorbird.get_favorites().await.unwrap();
+    // println!("favorites={}", favorites);
+
+    let status = doorbird
+        .add_favorite(
+            String::from("http"),
+            String::from("test title"),
+            String::from("https://www.google.com"),
+            Option::None,
+        )
         .await
         .unwrap();
-    // .into_report()
-    // .change_context(std::io::Error::new(
-    //     std::io::ErrorKind::Other,
-    //     "some API error happened here",
-    // ))
-    // .attach_printable("somthing failed")?;
-    println!("json={}", res);
-
+    println!("add_favourite={}", status);
     Ok(())
 }
 
@@ -32,6 +51,7 @@ mod configuration {
     pub fn get_configuration() -> Result<AppSettings, ConfigError> {
         let config = Config::builder()
             .add_source(File::with_name("appsettings.toml"))
+            .add_source(File::with_name("appsettings.local.toml").required(false))
             .add_source(
                 config::Environment::with_prefix("APP")
                     .prefix_separator("_")
