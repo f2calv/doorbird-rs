@@ -14,10 +14,10 @@ impl ProcessImage {
     pub fn new(test: String) -> Self {
         Self {
             test,
-            x: 1000,
-            y: 1000,
-            width: 1000,
-            height: 1000,
+            x: 100,
+            y: 100,
+            width: 600,
+            height: 1100,
         }
     }
 
@@ -26,7 +26,7 @@ impl ProcessImage {
 
         // Use the open function to load an image from a Path.
         // `open` returns a `DynamicImage` on success.
-        let mut img = image::open("/testdata/test.jpg")?;
+        let mut img = image::open("/testdata/test-1920x1440.jpg")?;
 
         // The dimensions method returns the images width and height.
         println!("img dimensions {:?}", img.dimensions());
@@ -49,6 +49,8 @@ impl ProcessImage {
 
         let duration = start.elapsed();
         println!("Time elapsed is: {:?}", duration);
+
+        //Note: test with 'cargo run --release' !
 
         Ok(true)
     }
