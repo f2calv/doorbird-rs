@@ -11,6 +11,10 @@ async fn main() -> Result<(), std::io::Error> {
 
     log::debug!("application started...");
 
+    let image_processing = lib::image_processing::ProcessImage::new(String::from("abc"));
+    _ = image_processing.run_image_tests();
+    std::process::exit(0);
+
     let doorbird = lib::doorbird_api::Doorbird::new(_app_settings.doorbird_config);
 
     // let res = doorbird.get_session().await.unwrap();
