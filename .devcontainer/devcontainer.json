@@ -20,6 +20,9 @@
 		"ghcr.io/devcontainers/features/powershell:1": {},
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
 	},
+	"mounts": [
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/source/repos/github/doorbird-rs/testdata,target=/testdata,type=bind,consistency=cached"
+	],
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
