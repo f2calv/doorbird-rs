@@ -1,3 +1,5 @@
+#![allow(unreachable_code)]
+#![allow(unused_imports)]
 use env_logger::Env;
 use error_stack::Result;
 

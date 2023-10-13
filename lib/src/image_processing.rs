@@ -1,7 +1,7 @@
-use std::time::Instant;
+#![allow(unused_imports)]
 
 use image::{imageops, GenericImageView, ImageError};
-
+use std::time::Instant;
 pub struct ProcessImage {
     pub test: String,
     pub x: u32,
