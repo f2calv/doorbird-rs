@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 lib = { path = "../lib" }
-config = "0.13"
+config = "0.14"
 env_logger = "0.10"
 log = "0.4"
 tokio = { version = "1.27", features = ["full"] }
