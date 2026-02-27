@@ -5,10 +5,10 @@ edition = "2021"
 
 [dependencies]
 lib = { path = "../lib" }
-config = "0.14"
-env_logger = "0.10"
+config = "0.15"
+env_logger = "0.11"
 log = "0.4"
-tokio = { version = "1.27", features = ["full"] }
-error-stack = "0.4"
+tokio = { version = "1", features = ["full"] }
+error-stack = "0.6"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
