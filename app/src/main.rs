@@ -1,8 +1,8 @@
 use env_logger::Env;
-use error_stack::Result;
+use error_stack::Report;
 
 #[tokio::main]
-async fn main() -> Result<(), std::io::Error> {
+async fn main() -> Result<(), Report<std::io::Error>> {
     // Set INFO logging level as default
     env_logger::Builder::from_env(Env::default().default_filter_or("debug")).init();
 
