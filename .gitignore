@@ -20,3 +20,6 @@ appsettings.local.toml
 
 #exclude example JSON responses
 responses/*
+
+# Privacy scan reports may contain extracted local values.
+pii-report*.csv
