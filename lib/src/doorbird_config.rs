@@ -1,4 +1,3 @@
-
 #[derive(Debug, serde::Deserialize)]
 pub struct DoorbirdConfig {
     pub ip: Option<String>,
