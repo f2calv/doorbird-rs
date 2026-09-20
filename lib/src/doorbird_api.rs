@@ -161,7 +161,7 @@ impl Doorbird {
         //     id: None,
         // };
         // let url = format!("{}&{}", url, favourite);
-        //let url = "http://192.168.1.170/bha-api/favorites.cgi?action=save&type=http&title=RingServ&value=https://172.17.1.5/notify/ring";
+        //let url = "http://192.0.2.10/bha-api/favorites.cgi?action=save&type=http&title=Example&value=https://198.51.100.20/notify/ring";
 
         log::debug!("url={}", url);
         let client = reqwest::Client::new();

@@ -1,17 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-echo "postStartCommand.sh"
-echo "-------------------"
+# Reports the Rust and repository-linting tool versions on container start.
 
-sudo apt-get update
-sudo apt-get upgrade -y
+set -euo pipefail
 
-rustup --version
+echo "Development tools"
+echo "-----------------"
 rustc --version
-
-# alias cls="clear"
-# alias cc="cargo check"
-# alias cb="cargo build"
-# alias cr="cargo run"
-
-echo "Done"
+cargo --version
+pre-commit --version

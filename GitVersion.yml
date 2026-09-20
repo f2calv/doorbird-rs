@@ -1,11 +1,12 @@
-mode: MainLine
+mode: ContinuousDeployment
 branches:
   main:
     regex: ^main$
-    tag: ''
+    label: ''
   feature:
-    regex: ^features?[/-]
-    tag: useBranchName
+    mode: ContinuousDelivery
+    regex: ^(features?|f2calv|copilot)[/-](?<BranchName>.+)
+    label: '{BranchName}'
 ignore:
   sha: []
 merge-message-formats: {}
