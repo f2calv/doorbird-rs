@@ -1,4 +1,7 @@
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
+
+#### Common to every file ####
 
 [*]
 charset = utf-8
@@ -8,13 +11,19 @@ indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{json,json5,yaml,yml}]
+[*.{yml,yaml,json,json5}]
 indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
 
+[Makefile]
+indent_style = tab
+
+# Rust files
+# Formatting is owned by rustfmt; these settings also cover files rustfmt does not touch.
 [*.rs]
+indent_size = 4
 max_line_length = 100
 
 [*.toml]
